@@ -36,7 +36,7 @@ export class UserResolver{
     @Mutation(() => UserResponse)
     async Register(
         @Arg('options') options: userOptions,
-        @Ctx()  {em} : MyContext
+        @Ctx()  {em, req} : MyContext
     ) : Promise<UserResponse> {
         if(options.username.length <=2 ){
             return {
@@ -74,7 +74,11 @@ export class UserResolver{
             }
             console.log(error)
         }
-        
+
+  
+        //@ts-ignore
+        req.session!.userId = user.id
+
         return {
             user: user
         }
@@ -83,7 +87,7 @@ export class UserResolver{
     @Mutation(() => UserResponse)
     async login(
         @Arg('options') options: userOptions,
-        @Ctx()  {em} : MyContext
+        @Ctx()  {em, req} : MyContext
     ){
         const user = await em.findOne(User, {username: options.username})
         if(!user){
@@ -104,6 +108,11 @@ export class UserResolver{
                 }]
             }
         }
+
+        // save this to redis
+        //@ts-ignore
+        req.session!.userId = user.id
+
         return {user}
     }
 
