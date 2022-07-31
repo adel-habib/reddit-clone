@@ -19,7 +19,7 @@ export class PostResolver{
     }
 
     @Mutation(() => Post)
-    async create(
+    async createPost(
         @Arg("title", ()=> String) title :  string,
         @Ctx() {em} : MyContext
     ) {
