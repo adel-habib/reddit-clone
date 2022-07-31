@@ -21,6 +21,7 @@ coverage
 
 # Migrations
 src/migrations/*
+
 # API keys and secrets
 .env
 
